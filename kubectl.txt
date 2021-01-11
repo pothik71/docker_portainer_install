@@ -1,0 +1,17 @@
+Kubernetes:
+=========
+
+kubectl:
+--------
+
+# kubectl run hello-minikube
+
+# kubectl cluster-info
+
+# kubectl get nodes
+
+What is the flavour and version of Operating System on which the Kubernetes nodes are running?
+
+Run the 
+# kubectl get nodes -o wide 
+command and view the OS-IMAGE column.
