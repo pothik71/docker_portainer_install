@@ -1,0 +1,56 @@
+How to Deploy a Kubernetes Cluster
+===================================
+
+Step 1: Create Cluster with kubeadm
+------------------------------------
+
+Initialize a cluster by executing the following command:
+
+# sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+The process might take several minutes to complete based on network speed. Once this command finishes, it displays a kubeadm join message. Make a note of the entry and use it to join worker nodes to the cluster at a later stage.
+
+
+Step 2: Manage Cluster as Regular User
+-----------------------------------------
+To start using the cluster you need to run it as a regular user by typing:
+
+# mkdir -p $HOME/.kube
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+Step 3: Set Up Pod Network
+----------------------------
+
+A Pod Network allows nodes within the cluster to communicate. There are several available Kubernetes networking options. Use the following command to install the flannel pod network add-on:
+
+# sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+If you decide to use flannel, edit your firewall rules to allow traffic for the flannel default port 8285.
+
+
+Step 4: Check Status of Cluster
+---------------------------------
+
+Check the status of the nodes by entering the following command on the master server:
+
+# sudo kubectl get nodes
+
+Once a pod network has been installed, you can confirm that it is working by checking that the CoreDNS pod is running by typing:
+
+# sudo kubectl get pods --all-namespaces
+
+Step 5: Join Worker Node to Cluster
+------------------------------------
+
+As indicated in Step 1, you can use the kubeadm join command on each worker node to connect it to the cluster.
+
+# kubeadm join --discovery-token cfgrty.1234567890jyrfgd --discovery-token-ca-cert-hash sha256:1234..cdef 1.2.3.4:6443
+
+Replace the codes with the ones from your master server. Repeat this action for each worker node on your cluster.
+
+Conclusion
+You have installed Kubernetes on CentOS successfully and can now manage clusters across multiple servers. If you have bare metal server, you may want to look into our guide on how to install Kubernetes on such servers.
+This Kubernetes tutorial provides a good starting point for exploring the many options this versatile platform has to offer. Use Kubernetes to scale your operations more efficiently and spend less time on micromanaging containers.
+For beginners who still have no experience of deploying multiple containers, Minikube is a great way to start. Minikube is a system for running a single node cluster locally and is excellent for learning the basics, before moving on to Kubernetes.
