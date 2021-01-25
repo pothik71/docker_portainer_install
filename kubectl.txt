@@ -15,3 +15,7 @@ What is the flavour and version of Operating System on which the Kubernetes node
 Run the 
 # kubectl get nodes -o wide 
 command and view the OS-IMAGE column.
+
+Once a pod network has been installed, you can confirm that it is working by checking that the CoreDNS pod is running by typing:
+
+# sudo kubectl get pods --all-namespaces
